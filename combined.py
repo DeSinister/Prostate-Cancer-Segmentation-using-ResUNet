@@ -13,6 +13,8 @@ import torch.nn as nn
 import time
 import os
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
+root_path = r"C:\Users\nishq\Downloads\picai\main2"
+
 
 # ------- Setting Hyperparameters -------
 batch_size = 26
@@ -42,9 +44,9 @@ class FetchData():
     # Function To return the Fetched Data
     def prepare_fold(self):
         dataset = []
-        path = r"C:\Users\nishq\Downloads\picai\\main2" + "\\" + self.split
+        path = root_path + "\\" + self.split
         # For Every Image Type stored in the Split is read and the matched Input Image and target Image are stored in a List, which is stored in other exhaustive list
-        for j in glob.glob(path + f"\\*25_8*{self.input_image}.jpg"):
+        for j in glob.glob(path + f"\\*{self.input_image}.jpg"):
             # Read the Input Image in grayscale Format as being a single channel Image, and Apply the Transformation Function
             input = self.inpt(Image.open(j).convert('L'))
             # Read Target Image in a binary Format as being just 0/1 value, and Apply The Transformation Function
@@ -615,7 +617,7 @@ for epoch in range(num_of_epochs):
         # Changing the Lowest Loss to Current Validation Loss
         lowest_loss = validation_loss[-1]
         # Saving the Model
-        torch.save(model.state_dict(), rf"C:\Users\nishq\OneDrive\Desktop\{input_image}_to_{target_image}epoch_{epoch}_loss{validation_loss[-1]}.pt")
+        torch.save(model.state_dict(), root_path + rf"\{input_image}_to_{target_image}epoch_{epoch}_loss{validation_loss[-1]}.pt")
     else:
         # Model not performning better for this epoch
         bad_epochs+=1
