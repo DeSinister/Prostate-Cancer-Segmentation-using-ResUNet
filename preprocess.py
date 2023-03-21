@@ -8,6 +8,8 @@ from torchvision import transforms
 
 # Reference Spacing for Uniform Spatial Referencing the 3D Images
 ref_spacing = [0.5, 0.5, 3.0]
+path = "C:\\Users\\nishq\\Downloads\\picai\\"
+
 
 def resample_image(img, ref_spacing, label = False):
     # Store Input Image stats
@@ -94,7 +96,6 @@ class PrepFiles():
         # for Everty Fold in the Split Stratified
         for i in self.f:
             # Generalized Input Path
-            path = "C:\\Users\\nishq\\Downloads\\picai\\"
 
             # For Every File Containing in the Respective Fold with extension t2w.mha
             for j in glob.glob(path + f"picai_public_images_fold{i}\\*\\*t2w.mha"):
@@ -104,13 +105,13 @@ class PrepFiles():
                 # Considering the Respective ID for The T2W Image and using it to extract the other Images
                 adc = resample_image(sitk.ReadImage(j[:-7]+"adc.mha"), ref_spacing)
                 hbv = resample_image(sitk.ReadImage(j[:-7]+"hbv.mha"), ref_spacing)
-                lesion = resample_image(sitk.ReadImage(path + f"picai_labels-main\\csPCa_lesion_delineations\\AI\\Bosma22a\\{j[63:-8]}.nii.gz"), ref_spacing, True)
-                whole_gland = resample_image(sitk.ReadImage(path + f"picai_labels-main\\anatomical_delineations\\whole_gland\\AI\\Bosma22b\\{j[63:-8]}.nii.gz"), ref_spacing, True)
+                lesion = resample_image(sitk.ReadImage(path + f"picai_labels-main\\csPCa_lesion_delineations\\AI\\Bosma22a\\{j[-22:-8]}.nii.gz"), ref_spacing, True)
+                whole_gland = resample_image(sitk.ReadImage(path + f"picai_labels-main\\anatomical_delineations\\whole_gland\\AI\\Bosma22b\\{j[-22:-8]}.nii.gz"), ref_spacing, True)
                 
                 # As we have 16 Different Slices, the Iterator is used to process each 2D Slice
                 for k in range(16):
                         # Extracting ID that is {Study}_{Patient}
-                        id = j[63:-8] 
+                        id = j[-22:-8] 
 
                         # Extracting kth slice of 16 2D slices
                         # Normalizing the Input Images
